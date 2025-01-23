@@ -1,0 +1,176 @@
+﻿@inherits LayoutComponentBase
+
+@using Syncfusion.Blazor.Navigations
+<head>
+   
+</head>
+<body>
+    <div class="page">
+        <main>
+            <div class="top-row px-4">
+                <NavMenu />
+                <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">Log In</a>
+                
+            </div>
+            <nav>
+                <div>
+                    <img src="/pics/logo.png" style="width:100px; height:100px;"/>
+                </div>
+                <div>
+                    <input type="text" />
+                    <button>Search</button>
+                </div>
+
+                <div>
+                    <NavLink href="weather">
+                        <img src="/pics/cart.png" style="width:35px; height:35px;" />
+                    </NavLink>
+                </div>
+
+            </nav>
+            
+                <div class="slideshow-container">
+                    <div class="mySlides fade">
+                        <img src="https://img.freepik.com/free-vector/flat-horizontal-sale-banner-template-world-book-day-celebration_23-2150201468.jpg">
+                    </div>
+                    <div class="mySlides fade">
+                        <img src="https://img.freepik.com/free-vector/flat-world-book-day-social-media-promo-template_23-2149314677.jpg">
+                    </div>
+
+                </div>
+                
+                <section id="section-books-categories">
+                    <div class="cont-b-c">
+
+                    
+                    <aside>
+                        <div class="cat-block">
+                            <h2>Categories</h2>
+                            @if (categoriesTOP10 == null)
+                            {
+                                <h2>Loading...</h2>
+                            }
+                            else
+                            {
+                                <div class="cat-menu">
+
+
+                                    @foreach (Category category in categoriesTOP10)
+                                    {
+                                        <div class="cat">
+
+                                            <span>@category.Name</span>
+
+                                            <input type="checkbox" @onchange="(e) => OnCategoryChange(category.Name,(bool)e.Value)" />
+
+
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+
+
+
+                            <button @onclick="TestButtonClick">Apply</button>
+                            
+                        </div>
+                    </aside>
+                    
+
+                <article class="content px-4">
+                        <h3>Selected Categories:</h3>
+                        @if (appliedCategories.Count > 0)
+                        {
+                            @foreach (string category in appliedCategories)
+                            {
+                                <h2>@category</h2>
+                            }
+                        }
+                        else
+                        {
+                            <h4>No categories selected</h4>
+                        }
+                    </article>
+                </div>
+
+                @*  //<CascadingValue Value="appliedCategories">
+                        //    @Body
+
+                </CascadingValue>
+
+                </article>
+                </div>*@
+               
+                </section>
+            <button  @onclick="IncrementCount1">Click me</button>
+            <h2>@currentCount</h2>
+            
+            
+           
+            
+        </main>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    @*<script src="SlideShow.js"></script>*@
+
+</body>
+@code{
+    private List<string> tempCategories = new List<string>(); // do tego jak przycisk Apply pressed, tymczasowe kategorie
+    private List<string> appliedCategories = new List<string>();
+    bool checkedValue = false;
+   // po tym jak przycisk Apply pressed
+    
+    
+    BooksAPI apiC = new BooksAPI();
+    string imageUrlPart = "https://wolnelektury.pl/media/";
+    private List<Category>? categoriesTOP10;
+    protected override async Task OnInitializedAsync()
+    {
+        List<Category> categories = await apiC.GetAllGenres(); 
+        categoriesTOP10 = categories.Take(10).ToList();
+    }
+    private void OnCategoryChange(string category, bool isChecked)
+    {
+        if (isChecked)
+        {
+            // Добавляем категорию, если она отмечена
+            if (!tempCategories.Contains(category))
+                tempCategories.Add(category);
+            Console.WriteLine($"Added: {category}");
+        }
+        else
+        {
+            // Убираем категорию, если она не отмечена
+            if (tempCategories.Contains(category))
+                tempCategories.Remove(category);
+            Console.WriteLine($"Removed: {category}");
+        }
+    }
+
+    private void ApplyCategories()
+    {
+        Console.WriteLine($"Applying categories: {string.Join(", ", tempCategories)}");
+        appliedCategories = new List<string>(tempCategories); // Применяем изменения
+        
+    }
+    private void TestButtonClick()
+    {
+        Console.WriteLine("Test button clicked");
+    }
+    private int currentCount = 0;
+
+    private void IncrementCount1()
+    {
+        currentCount++;
+        
+    }
+
+
+}
+

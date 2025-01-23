@@ -1,0 +1,29 @@
+﻿.books {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between; 
+    margin: 20px;
+}
+.book-item {
+    flex: 1 1 calc(25% - 20px);
+    max-width: calc(25% - 20px);
+    text-align: center;
+    padding: 10px;
+  
+}
+.book-item:hover{
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.book-item img {
+    width: 100%;
+    height: auto;
+}
+.item-element{
+    display:flex;
+    text-align:center;
+    justify-content:center;
+}

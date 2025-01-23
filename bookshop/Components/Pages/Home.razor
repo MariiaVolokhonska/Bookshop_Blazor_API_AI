@@ -1,0 +1,67 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+
+
+
+<h2>Best Sellers</h2>
+@if (booksToShow == null)
+    {
+        <p>Loading...</p>
+    }
+else
+    {
+      
+        <div class="books">
+        @foreach (var book in booksToShow)
+        {
+            <div class="book-item">
+                <div class="item-element">
+                    <img src="@($"{imageUrlPart}{book.Image}")" style="width:20%; height:25%;" />
+                </div>
+                <div class="item-element">
+                    @book.Title
+                </div>
+                
+            </div>
+
+        }
+        </div>
+            
+    
+    }
+
+@code{
+    [CascadingParameter]
+    public List<string>? SelectedCategories { get; set; }
+
+    BooksAPI apiB = new BooksAPI();
+    string imageUrlPart = "https://wolnelektury.pl/media/";
+    private List<Book>? booksToShow;
+    protected override async Task OnInitializedAsync()
+    {
+        List<Book> books = await apiB.GetAllBooks();
+        if (SelectedCategories == null || !SelectedCategories.Any())
+        {
+            booksToShow = SelectTOP10Books(books);
+        }
+        else
+        {
+            booksToShow = books.Where(book => SelectedCategories.Contains(book.Genre)).ToList();
+        }
+
+       
+
+
+    }
+    private List<Book> SelectTOP10Books(List<Book> books)
+    {
+        return books.Take(10).ToList();
+    }
+    private List<Book> SelectBooksFilteredWithCategories(List<Book> books)
+    {
+        return null;
+    }
+
+}
