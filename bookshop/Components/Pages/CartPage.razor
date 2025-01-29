@@ -1,7 +1,28 @@
 ﻿@page "/cart-page"
 @rendermode InteractiveServer
-
+@inject NavigationManager Navigation
 
 @code {
+    private string name;
+    List<Book> booksInCart = new List<Book>();
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(Navigation.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        name = query["title"].ToString();
+    }
+    Book book = new Book();
+
+    BooksAPI api = new BooksAPI();
+    protected override async Task OnInitializedAsync()
+    {
+        book = await api.GetBookByTitle(name);
+        if(booksInCart!=null && !booksInCart.Contains(book))
+        {
+            booksInCart.Add(book);
+        }
+        booksInCart.ForEach(book1 => Console.WriteLine(book1.Title));
+    }
+   
 
 }

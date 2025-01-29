@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
+@inject NavigationManager Navigation
+
 @using Syncfusion.Blazor.Navigations
 <head>
    
@@ -17,8 +19,8 @@
                     <img src="/pics/logo.png" style="width:100px; height:100px;"/>
                 </div>
                 <div>
-                    <input type="text" />
-                    <button>Search</button>
+                    <input type="text" @bind="inputText" />
+                    <button @onclick="(e)=>SearchForBookWithTitle(inputText)">Search</button>
                 </div>
 
                 <div>
@@ -56,7 +58,11 @@
 
 </body>
 @code{
-   
+    private string inputText = "";
+    void SearchForBookWithTitle(string name)
+    {
+        Navigation.NavigateTo($"/book-details?title={Uri.EscapeDataString(name)}");
+    }
 
 
 }
