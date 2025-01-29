@@ -1,59 +1,112 @@
 ﻿@page "/"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
 
 <PageTitle>Home</PageTitle>
+<section id="section-books-categories">
+    <div class="cont-b-c">
+
+        <aside>
+            <div class="cat-block">
+                <h2>Categories</h2>
+                @if (categoriesTOP10 == null)
+                {
+                    <h2>Loading...</h2>
+                }
+                else
+                {
+                    <div class="cat-menu">
 
 
+                        @foreach (Category category in categoriesTOP10)
+                        {
+                            <div class="cat">
+
+                                <span>@category.Name</span>
+
+                                <input type="checkbox" @onchange="(e) => OnCategoryChange(category.Name,(bool)e.Value)" />
 
 
-<h2>Best Sellers</h2>
-@if (booksToShow == null)
-    {
-        <p>Loading...</p>
-    }
-else
-    {
-      
-        <div class="books">
-        @foreach (var book in booksToShow)
-        {
-            <div class="book-item">
-                <div class="item-element">
-                    <img src="@($"{imageUrlPart}{book.Image}")" style="width:20%; height:25%;" />
-                </div>
-                <div class="item-element">
-                    @book.Title
-                </div>
-                
+                            </div>
+                        }
+                    </div>
+                }
+
+                <button @onclick="ApplyCategories">Apply</button>
+
             </div>
+        </aside>
 
-        }
-        </div>
-            
-    
-    }
+
+        <article class="content px-4">
+            <h2>Best Sellers</h2>
+            @if (booksToShow == null)
+            {
+                <p>Loading...</p>
+            }
+            else
+            {
+
+                <div class="books">
+                    @foreach (var book in booksToShow)
+                    {
+                        <div class="book-item" @onclick="(e) =>OpenBookDetails(book)">
+                            <div class="item-element">
+                                <img src="@($"{imageUrlPart}{book.Image}")" style="width:20%; height:25%;" />
+                            </div>
+                            <div class="item-element">
+                                @book.Title
+                            </div>
+                            <div>
+                               @book.Genre</div>
+
+                        </div>
+
+                    }
+                </div>
+
+
+            }
+        </article>
+    </div>
+
+</section>
+
+
 
 @code{
-    [CascadingParameter]
-    public List<string>? SelectedCategories { get; set; }
+
 
     BooksAPI apiB = new BooksAPI();
     string imageUrlPart = "https://wolnelektury.pl/media/";
     private List<Book>? booksToShow;
+    private List<string> tempCategories = new List<string>(); // do tego jak przycisk Apply pressed, tymczasowe kategorie
+    private List<string> appliedCategories = new List<string>();
+    bool checkedValue = false;
+   
+
+
+
+    private List<Category>? categoriesTOP10;
     protected override async Task OnInitializedAsync()
     {
         List<Book> books = await apiB.GetAllBooks();
-        if (SelectedCategories == null || !SelectedCategories.Any())
-        {
-            booksToShow = SelectTOP10Books(books);
-        }
-        else
-        {
-            booksToShow = books.Where(book => SelectedCategories.Contains(book.Genre)).ToList();
-        }
+        // if (SelectedCategories == null || !SelectedCategories.Any())
+        // {
 
+          booksToShow = SelectTOP10Books(books);
+        // }
+        // else
+        // {
+        
+       // booksToShow = books.Where(book => appliedCategories != null && appliedCategories.Any(selected => selected.Equals(book.Genre))).ToList();
+       // booksToShow.ForEach(book => Console.WriteLine($"Name: {book.Title}"));
+          //  StateHasChanged();
+           // 
+       // }
+        List<Category> categories = await apiB.GetAllGenres();
+        categoriesTOP10 = categories.Take(10).ToList();
        
-
-
     }
     private List<Book> SelectTOP10Books(List<Book> books)
     {
@@ -63,5 +116,36 @@ else
     {
         return null;
     }
+    void OpenBookDetails(Book book)
+    {
+        Navigation.NavigateTo($"/book-details?title={Uri.EscapeDataString(book.Title)}");
+    }
+   
+    
+    private void OnCategoryChange(string category, bool isChecked)
+    {
+        if (isChecked)
+        {
+            
+            if (!tempCategories.Contains(category))
+                tempCategories.Add(category);
+            Console.WriteLine($"Added: {category}");
+        }
+        else
+        {
+            
+            if (tempCategories.Contains(category))
+                tempCategories.Remove(category);
+            Console.WriteLine($"Removed: {category}");
+        }
+    }
+
+    private void ApplyCategories()
+    {
+        appliedCategories = new List<string>(tempCategories); 
+        
+
+    }
+   
 
 }
