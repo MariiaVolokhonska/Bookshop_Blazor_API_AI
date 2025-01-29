@@ -11,12 +11,7 @@ main {
 * {
     box-sizing: border-box;
 }
-nav {
-    margin:2%;
-    justify-content: space-around;
-    display: flex;
-    align-items: center;
-}
+
 
 
 .slideshow-container {

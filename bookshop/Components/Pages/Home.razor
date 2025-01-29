@@ -3,7 +3,22 @@
 @inject NavigationManager Navigation
 
 <PageTitle>Home</PageTitle>
+<nav class="funcs">
+    <div>
+        <img src="/pics/logo.png" style="width:100px; height:100px;" />
+    </div>
+    <div>
+        <input type="text" @bind="inputText" />
+        <button @onclick="(e)=>SearchForBookWithTitle(inputText)">Search</button>
+    </div>
 
+    <div>
+        <NavLink href="cart-page">
+            <img src="/pics/cart.png" style="width:35px; height:35px;" />
+        </NavLink>
+    </div>
+
+</nav>
 <section id="section-books-categories">
     <div class="cont-b-c">
 
@@ -89,7 +104,8 @@
     private List<string> tempCategories = new List<string>(); // do tego jak przycisk Apply pressed, tymczasowe kategorie
     private List<string> appliedCategories = new List<string>();
     bool checkedValue = false;
-
+    private string inputText = "";
+    
 
 
 
@@ -155,6 +171,10 @@
         
 
     }
-   
+    void SearchForBookWithTitle(string name)
+    {
+        Navigation.NavigateTo($"/book-details?title={Uri.EscapeDataString(name)}");
+    }
+
 
 }

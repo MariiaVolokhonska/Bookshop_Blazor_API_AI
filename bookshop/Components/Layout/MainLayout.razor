@@ -14,22 +14,7 @@
                 <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">Log In</a>
                 
             </div>
-            <nav>
-                <div>
-                    <img src="/pics/logo.png" style="width:100px; height:100px;"/>
-                </div>
-                <div>
-                    <input type="text" @bind="inputText" />
-                    <button @onclick="(e)=>SearchForBookWithTitle(inputText)">Search</button>
-                </div>
-
-                <div>
-                    <NavLink href="cart-page">
-                        <img src="/pics/cart.png" style="width:35px; height:35px;" />
-                    </NavLink>
-                </div>
-
-            </nav>
+            
             
                 <div class="slideshow-container">
                     <div class="mySlides fade">
@@ -58,11 +43,7 @@
 
 </body>
 @code{
-    private string inputText = "";
-    void SearchForBookWithTitle(string name)
-    {
-        Navigation.NavigateTo($"/book-details?title={Uri.EscapeDataString(name)}");
-    }
+    
 
 
 }
