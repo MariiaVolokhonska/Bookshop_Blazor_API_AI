@@ -1,5 +1,49 @@
-﻿<h3>ChatBot</h3>
+﻿@page "/chatbot"
+@rendermode InteractiveServer
+@using GroqApiLibrary;
+@using System.Text.Json.Nodes;
+
+<PageTitle>Chat</PageTitle>
+
+<h1>Hi! My name is Booky. I'm virtual consultant and I'm here to help you decide which genre, author or book to pick depending on your preferences. Type the quetions and I will try my best to answer it :)</h1>
+<input @bind="newLine" />
+<p role="status">Chat response: @answer</p>
+
+<button class="btn btn-primary" @onclick="ChatCompletion">ASK chat</button>
 
 @code {
+    private string newLine = "";
+    private string answer = "Here will the answer come.";
+    private static string apiKey = "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";
+    private GroqApiClient groqApi = new GroqApiClient(apiKey);
 
+    private async Task ChatCompletion()
+    {
+        if (!string.IsNullOrWhiteSpace(newLine))
+        {
+            var request = new JsonObject
+                {
+                    ["model"] = "llama-3.3-70b-versatile",
+                    ["messages"] = new JsonArray
+            {
+                new JsonObject
+                {
+                    ["role"] = "user",
+                    ["content"] = newLine
+                }
+            }
+                };
+
+            var result = await groqApi.CreateChatCompletionAsync(request);
+            answer = result?["choices"]?[0]?["message"]?["content"]?.ToString();
+           
+        }
+        else
+        {
+            answer = "Sorry, I didn't understand. Please, rephrase the question.";
+          
+        }
+
+    }
 }
+
