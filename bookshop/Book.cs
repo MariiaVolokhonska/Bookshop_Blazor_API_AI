@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json;
 
+
 namespace bookshop
 {
     public class Book
+
     {
+        private static Random random = new Random();
         private double? _price;
         [JsonProperty("title")]
         public string Title { get; set; }
@@ -13,14 +16,17 @@ namespace bookshop
         public string Genre { get; set; }
         [JsonProperty("slug")]
         public string Slug { get; set; }
-        public double? Price {
-            get
-            {
-                return _price;
-            }
-            set {
-                _price = 200.00;
-                    } 
+        [JsonProperty("author")]
+        public string Author { get; set; }
+        public double? Price
+        {
+            get;
+        }
+
+        public Book()
+        {
+            Price = Math.Round(random.NextDouble() * (200), 2); 
         }
     }
+   
 }

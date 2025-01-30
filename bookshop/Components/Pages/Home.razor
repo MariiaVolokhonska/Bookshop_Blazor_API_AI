@@ -77,7 +77,7 @@
                                     @book.Title
                                 </div>
                                 <div>
-                                    @book.Genre
+                                    @book.Price $
                                 </div>
                                 </div>
                             
@@ -131,11 +131,11 @@
     }
     void OpenBookDetails(Book book)
     {
-        Navigation.NavigateTo($"/book-details?title={Uri.EscapeDataString(book.Title)}");
+        Navigation.NavigateTo($"/book-details?title={Uri.EscapeDataString(book.Title)}",forceLoad: true);
     }
     void AddToCart(Book book)
     {
-        Navigation.NavigateTo($"/cart-page?title={Uri.EscapeDataString(book.Title)}");
+        Navigation.NavigateTo($"/cart-page?title={Uri.EscapeDataString(book.Title)}", forceLoad: true);
     }
 
     private void OnCategoryChange(string category, bool isChecked)

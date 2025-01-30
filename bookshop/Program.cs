@@ -13,6 +13,7 @@ internal class Program
             .AddInteractiveServerComponents();
 
         builder.Services.AddSyncfusionBlazor();
+        builder.Services.AddSingleton<CartService>();
 
         var app = builder.Build();
 

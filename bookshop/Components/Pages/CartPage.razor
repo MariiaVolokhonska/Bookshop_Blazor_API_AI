@@ -1,28 +1,75 @@
 ﻿@page "/cart-page"
 @rendermode InteractiveServer
 @inject NavigationManager Navigation
+@inject CartService CartService
+
+<h1>Cart</h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>Price</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (CartService.BooksInCart == null)
+        {
+            <h3>Loading...</h3>
+        }
+        else
+        {
+            @foreach (Book bk in CartService.BooksInCart)
+            {
+                <tr>
+                    <td>
+                        @bk.Title
+                    </td>
+                    <td>
+                        @bk.Price
+                    </td>
+                    <td>
+                        1
+                    </td>
+                </tr>
+            }
+        }
+       
+    </tbody>
+    
+
+</table>
+<h3>Total price: @CartService.GetTotalPrice() </h3>
 
 @code {
     private string name;
     List<Book> booksInCart = new List<Book>();
-    protected override void OnInitialized()
-    {
-        var uri = new Uri(Navigation.Uri);
-        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-        name = query["title"].ToString();
-    }
+   
     Book book = new Book();
 
     BooksAPI api = new BooksAPI();
     protected override async Task OnInitializedAsync()
     {
-        book = await api.GetBookByTitle(name);
-        if(booksInCart!=null && !booksInCart.Contains(book))
+      var uri = new Uri(Navigation.Uri);
+      var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+      name = query["title"].ToString();
+
+        if (!string.IsNullOrEmpty(name))
         {
-            booksInCart.Add(book);
-        }
-        booksInCart.ForEach(book1 => Console.WriteLine(book1.Title));
+            
+            book = await api.GetBookByTitle(name);
+
+            if (book != null)
+            {
+                
+                if (!CartService.BooksInCart.Any(b => b.Title == book.Title))
+                {
+                    CartService.AddToCart(book); 
+                }
+            }
+        
     }
    
 
+}
 }
