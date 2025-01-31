@@ -5,11 +5,20 @@
 
 <PageTitle>Chat</PageTitle>
 
-<h1>Hi! My name is Booky. I'm virtual consultant and I'm here to help you decide which genre, author or book to pick depending on your preferences. Type the quetions and I will try my best to answer it :)</h1>
-<input @bind="newLine" />
-<p role="status">Chat response: @answer</p>
+    <h1>Hi! My name is Booky.</h1>
+    <h2>I'm virtual consultant and I'm here to help you decide which genre, author or book to pick depending on your preferences. </h2>
+    <h2>Type the questions and I will try my best to answer it :)</h2>
+<div class="container">
+<p role="status" class="show">@answer</p>
+<div class="field-ask">
+        <input @bind="newLine" id="input-chat"/>
+        <button id="button-chat" @onclick="ChatCompletion">ASK chat</button>
+</div>
+    
+</div>
+    
 
-<button class="btn btn-primary" @onclick="ChatCompletion">ASK chat</button>
+
 
 @code {
     private string newLine = "";

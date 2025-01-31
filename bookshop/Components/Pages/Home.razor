@@ -103,11 +103,12 @@
     BooksAPI apiB = new BooksAPI();
     string imageUrlPart = "https://wolnelektury.pl/media/";
     private List<Book>? booksToShow;
-    private List<string> tempCategories = new List<string>(); // do tego jak przycisk Apply pressed, tymczasowe kategorie
+    private List<string> tempCategories = new List<string>(); 
     private List<string> appliedCategories = new List<string>();
     bool checkedValue = false;
     private string inputText = "";
     List<Book> books;
+    List<string> titleOfBooks = new List<string>();
 
 
 
@@ -119,11 +120,11 @@
         categoriesTOP10 = categories.Take(10).ToList();
         books = await apiB.GetAllBooks();
         booksToShow = SelectTOP10Books(books);
-       
+
     }
     private List<Book> SelectTOP10Books(List<Book> books)
     {
-        return books.Take(10).ToList();
+        return books.Take(12).ToList();
     }
     private List<Book> SelectBooksFilteredWithCategories(List<Book> books)
     {
@@ -142,26 +143,26 @@
     {
         if (isChecked)
         {
-            
+
             if (!tempCategories.Contains(category))
                 tempCategories.Add(category);
-            Console.WriteLine($"Added: {category}");
+
         }
         else
         {
-            
+
             if (tempCategories.Contains(category))
                 tempCategories.Remove(category);
-            Console.WriteLine($"Removed: {category}");
+
         }
     }
 
 
     private async Task ApplyCategories()
     {
-        
+
         appliedCategories = new List<string>(tempCategories); 
-        
+
         if (appliedCategories == null || !appliedCategories.Any())
         {
 
@@ -171,15 +172,23 @@
         {
 
             booksToShow = books.Where(book => appliedCategories.Any(selected => selected.Equals(book.Genre))).ToList();
-            Console.WriteLine($"Примененные категории: {string.Join(", ", appliedCategories)}");
-            Console.WriteLine($"Книг после фильтрации: {booksToShow.Count}");
             StateHasChanged();
-            
+
         }
     }
     void SearchForBookWithTitle(string name)
     {
-        Navigation.NavigateTo($"/book-details?title={Uri.EscapeDataString(name)}");
+        titleOfBooks = books.Select(book => book.Title.ToLower()).ToList();
+        if (name != null && titleOfBooks.Contains(name.ToLower()))
+        { 
+            Navigation.NavigateTo($"/book-details?title={Uri.EscapeDataString(name)}");
+        }
+        else
+        {
+            inputText = "This book wasn't found.";
+        }
+
+
     }
 
 

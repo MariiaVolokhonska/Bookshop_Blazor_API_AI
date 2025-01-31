@@ -1,0 +1,137 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    
+}
+nav div {
+    display: flex;
+}
+
+nav a {
+    text-decoration: none;
+    color: #e6f2ff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    nav a:hover {
+        background-color: #003d80;
+        color: #ffffff;
+    }
+
+.menu {
+    background-color: #0056b3; 
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+   
+    box-shadow: 0px 4px 10px rgba(0, 86, 179, 0.2);
+}
+
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+        header a {
+            display: block;
+            text-align: center;
+            width: 100%;
+            padding: 10px 0;
+        }
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+h1 {
+    color: #0056b3;
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#input-chat {
+    width: 80%;
+    max-width: 500px;
+    padding: 10px;
+    border: 2px solid #0056b3;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+    text-align: center;
+}
+
+#button-chat {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+    button:hover {
+        background-color: #003d80;
+    }
+
+p[role="status"] {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #004080;
+    padding: 15px;
+    background: #e6f2ff;
+    border-radius: 8px;
+    max-width: 800px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+    p[role="status"].show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+.field-ask{
+    display:flex;
+    justify-content:center;
+}
