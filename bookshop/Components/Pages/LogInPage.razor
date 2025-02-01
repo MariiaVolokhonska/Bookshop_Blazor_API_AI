@@ -4,20 +4,25 @@
 @inject NavigationManager Navigation
 @using bookshop.DbModels
 
-<h3>LogInPage</h3>
+
 <div class="login">
+    <h3>LogIn</h3>
     <div class="login-item">
-        <input type="text" label="Login" @bind="login" />
+        <label for="login">Login</label>
+        <input type="text" @bind="login" />
     </div>
     <div class="login-item">
-        <input type="text" label="Password" @bind="password" />
+        <label for="password">Password</label>
+        <input type="password" @bind="password" />
     </div>
     <button @onclick="(e)=>LoginUser()">LogIn</button>
+    <p @bind=""></p>
 </div>
 
 @code {
     private string login = "";
     private string password = "";
+    private string errorMessage = "";
     private User? user = new User();
 
     public async Task LoginUser()
@@ -29,11 +34,17 @@
             if (user != null && (user.Password == password))
             {
                 UserManagementService.UserLogedInSystem = user;
+                errorMessage = "";
                 Navigation.NavigateTo($"/", forceLoad: true);
+
+            }
+            {
+                errorMessage = "Login or password is incorrect.Please, try again";
             }
 
         }
         
+
 
     }
 

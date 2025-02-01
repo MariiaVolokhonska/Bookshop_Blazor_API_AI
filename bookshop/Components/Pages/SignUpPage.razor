@@ -2,24 +2,53 @@
 @rendermode InteractiveServer
 @inject UserManagementService UserManagementService
 @inject NavigationManager Navigation
+@inject FormValidationService ValidationService
 @using bookshop.DbModels
 
-<h3>SignUpPage</h3>
 
-<div class="signup">
-    <div calss="signup-elem">
-        <input type="text" label="Login" @bind="login" />
+
+<div class="login">
+    <h3>SignUp</h3>
+    <div class="login-item">
+        <div class="error-message">
+            <label for="login">Login</label>
+            <input type="text" label="Login" @bind="login" id="login" @bind:event="oninput" />
+        </div>
+        <div class="error-message">
+            <span class="error-message" style="color: red;" hidden="@IsLoginValid">Login must be at least 8 characters.</span>
+        </div>
+        
+        
     </div>
-    <div calss="signup-elem">
-        <input type="text" label="Address" @bind="address" />
+    <div class="login-item">
+        
+        <label for="address">Address</label>
+        <input type="text" label="Address" @bind="address" id="address"/>
     </div>
-    <div calss="signup-elem">
-        <input type="text" label="PhoneNumber" @bind="phoneNumber" />
+
+    <div class="login-item">
+        <div class="error-message">
+            <label for="phone">Phone Number</label>
+            <input type="text" label="Phone" @bind="phoneNumber" id="phone" @bind:event="oninput" />
+        </div>
+        <div class="error-message">
+            <span class="error-message" style="color: red;" hidden="@IsPhoneValid">Phone number must be exactly 9 digits.</span>
+        </div>
     </div>
-    <div calss="signup-elem">
-        <input type="text" label="Password" @bind="password" />
+
+    <div class="login-item">
+        <div class="error-message">
+            <label for="password">Password</label>
+            <input type="password" label="Password" @bind="password" id="password" @bind:event="oninput" />
+        </div>
+        <div class="error-message">
+            <span class="error-message" style="color: red;" hidden="@IsPasswordValid">
+                Password must be at least 8 characters, include a capital letter and a special character.
+            </span>
+        </div> 
     </div>
-    <button @onclick="(e)=>SignUpUser()">SignUp</button>
+
+    <button @onclick="SignUpUser" disabled="@(!IsFormValid)">SignUp</button>
 </div>
 
 @code {
@@ -29,22 +58,31 @@
     private string? phoneNumber = "";
     private string? address = "";
 
+    private bool IsLoginValid => ValidationService.ValidateLogin(login);
+    private bool IsPhoneValid => ValidationService.ValidatePhoneNumber(phoneNumber);
+    private bool IsPasswordValid => ValidationService.ValidatePassword(password);
+    private bool IsFormValid => IsLoginValid && IsPhoneValid && IsPasswordValid;
+   
     public async Task SignUpUser()
     {
-        if (!String.IsNullOrEmpty(login) && !String.IsNullOrEmpty(address) && !String.IsNullOrEmpty(phoneNumber) && !String.IsNullOrEmpty(password))
+       
+        if (IsFormValid)
         {
-            user = new User
-                {
-                    Login = login,
-                    Address = address,
-                    PhoneNumber = phoneNumber,
-                    Password = password
-                };
-            await UserManagementService.CreateUser(user);
+            if (!String.IsNullOrEmpty(login) && !String.IsNullOrEmpty(address) && !String.IsNullOrEmpty(phoneNumber) && !String.IsNullOrEmpty(password))
+            {
+                user = new User
+                    {
+                        Login = login,
+                        Address = address,
+                        PhoneNumber = phoneNumber,
+                        Password = password
+                    };
+                await UserManagementService.CreateUser(user);
 
-            Navigation.NavigateTo($"/login", forceLoad: true);
+                Navigation.NavigateTo($"/login", forceLoad: true);
+            }
         }
-        
+         
     }
 
 }

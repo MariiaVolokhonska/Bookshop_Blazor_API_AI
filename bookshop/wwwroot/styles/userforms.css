@@ -4,8 +4,10 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f4f4f9;
+    background-color: white;
     font-family: 'Arial', sans-serif;
+    border-radius: 3px 4px;
+    
 }
 
 .login-item {
@@ -16,7 +18,7 @@
     flex-direction: column;
 }
 
-    .login-item input {
+    .login-item  input {
         padding: 10px;
         margin-top: 5px;
         font-size: 16px;
@@ -26,7 +28,16 @@
         box-sizing: border-box;
     }
 
-        .login-item input:focus {
+        .login-item  input:focus {
             border-color: #007bff;
             outline: none;
         }
+
+.error-message {
+    display:flex;
+    align-items:center;
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+   
+}

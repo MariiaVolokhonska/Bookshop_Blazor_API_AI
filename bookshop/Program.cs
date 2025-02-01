@@ -20,6 +20,7 @@ internal class Program
         builder.Services.AddSyncfusionBlazor();
         builder.Services.AddSingleton<CartService>();
         builder.Services.AddScoped<UserManagementService>();
+        builder.Services.AddScoped<FormValidationService>();
 
         var app = builder.Build();
 
