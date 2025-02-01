@@ -1,5 +1,40 @@
-﻿<h3>LogInPage</h3>
+﻿@page "/login"
+@rendermode InteractiveServer
+@inject UserManagementService UserManagementService
+@inject NavigationManager Navigation
+@using bookshop.DbModels
+
+<h3>LogInPage</h3>
+<div class="login">
+    <div class="login-item">
+        <input type="text" label="Login" @bind="login" />
+    </div>
+    <div class="login-item">
+        <input type="text" label="Password" @bind="password" />
+    </div>
+    <button @onclick="(e)=>LoginUser()">LogIn</button>
+</div>
 
 @code {
+    private string login = "";
+    private string password = "";
+    private User? user = new User();
+
+    public async Task LoginUser()
+    {
+        if (!String.IsNullOrEmpty(login) && !String.IsNullOrEmpty(password))
+        {
+            user = await UserManagementService.GetUserByLogin(login);
+
+            if (user != null && (user.Password == password))
+            {
+                UserManagementService.UserLogedInSystem = user;
+                Navigation.NavigateTo($"/", forceLoad: true);
+            }
+
+        }
+        
+
+    }
 
 }

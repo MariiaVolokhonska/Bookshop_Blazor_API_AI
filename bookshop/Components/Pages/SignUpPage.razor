@@ -1,0 +1,50 @@
+﻿@page "/signup"
+@rendermode InteractiveServer
+@inject UserManagementService UserManagementService
+@inject NavigationManager Navigation
+@using bookshop.DbModels
+
+<h3>SignUpPage</h3>
+
+<div class="signup">
+    <div calss="signup-elem">
+        <input type="text" label="Login" @bind="login" />
+    </div>
+    <div calss="signup-elem">
+        <input type="text" label="Address" @bind="address" />
+    </div>
+    <div calss="signup-elem">
+        <input type="text" label="PhoneNumber" @bind="phoneNumber" />
+    </div>
+    <div calss="signup-elem">
+        <input type="text" label="Password" @bind="password" />
+    </div>
+    <button @onclick="(e)=>SignUpUser()">SignUp</button>
+</div>
+
+@code {
+    private User user;
+    private string? login = "";
+    private string? password = "";
+    private string? phoneNumber = "";
+    private string? address = "";
+
+    public async Task SignUpUser()
+    {
+        if (!String.IsNullOrEmpty(login) && !String.IsNullOrEmpty(address) && !String.IsNullOrEmpty(phoneNumber) && !String.IsNullOrEmpty(password))
+        {
+            user = new User
+                {
+                    Login = login,
+                    Address = address,
+                    PhoneNumber = phoneNumber,
+                    Password = password
+                };
+            await UserManagementService.CreateUser(user);
+
+            Navigation.NavigateTo($"/login", forceLoad: true);
+        }
+        
+    }
+
+}
