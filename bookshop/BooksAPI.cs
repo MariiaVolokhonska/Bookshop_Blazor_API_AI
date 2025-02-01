@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using bookshop.Models;
+using Newtonsoft.Json;
 namespace bookshop
 {
     public class BooksAPI
@@ -30,18 +31,7 @@ namespace bookshop
 
             return books;
         }
-        public async Task<Book> GetBookByTitle1(string name)
-        {
-            string partOfUrl = $"/api/books/{name}";
-            string completeUrl = _address + partOfUrl;
-            client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(completeUrl);
-            response.EnsureSuccessStatusCode();
-            var result = await response.Content.ReadAsStringAsync();
-            var book = JsonConvert.DeserializeObject<Book>(result);
-            return book;
-
-        }
+        
         public async Task<Book> GetBookByTitle(string title)
         {
             List<Book> books = await GetAllBooks();

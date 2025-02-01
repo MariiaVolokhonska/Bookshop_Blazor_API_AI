@@ -1,4 +1,5 @@
 ﻿@page "/cart-page"
+@using bookshop.Models
 @rendermode InteractiveServer
 @inject NavigationManager Navigation
 @inject CartService CartService
@@ -8,8 +9,8 @@
     <thead>
         <tr>
             <th>Book</th>
-            <th>Price</th>
-            <th>Amount</th>
+            <th>Price in PLN</th>
+            <th> </th>
         </tr>
     </thead>
     <tbody>
@@ -29,7 +30,7 @@
                         @bk.Price
                     </td>
                     <td>
-                        1
+                        <button @onclick="(e)=>CartService.DeleteFromCart(bk)">Remove item</button>
                     </td>
                 </tr>
             }
@@ -39,7 +40,7 @@
     
 
 </table>
-<h3>Total price: @CartService.GetTotalPrice() </h3>
+<h3>Total price: @CartService.GetTotalPrice() PLN </h3>
 
 @code {
     private string? name;

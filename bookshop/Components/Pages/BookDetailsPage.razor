@@ -2,19 +2,34 @@
 @rendermode InteractiveServer
 @inject NavigationManager Navigation
 @page "/book-details"
+@using bookshop.Models
 
-<div class="book-details-item">
-    <div class="item-element">
-        <img src="@($"{imageUrlPart}{book.Image}")" style="width:20%; height:25%;" />
-    </div>
-    <div class="item-element">
-        @book.Title
-    </div>
-    <div>
-        @book.Genre
+<div class="con-det">
+    <div class="book-details-item">
+        <div class="item-element">
+            <img src="@($"{imageUrlPart}{book.Image}")" style="width:20%; height:25%;" />
+        </div>
+        <div class="item-element-title">
+           Title: "@book.Title"
+        </div>
+        <div class="item-element">
+           Author: @book.Author
+        </div>
+        <div class="item-element">
+           Price: @book.Price PLN
+        </div>
+        <div class="item-element">
+           Genre: @book.Genre
+        </div>
+
+        <button @onclick="(e)=>AddToCart(book)">Add to cart</button>
+
+
     </div>
 
 </div>
+    
+
 
 @code {
     string imageUrlPart = "https://wolnelektury.pl/media/";
@@ -36,5 +51,9 @@
    protected override async Task OnInitializedAsync()
          {
          book = await api.GetBookByTitle(name);
+    }
+    void AddToCart(Book book)
+    {
+        Navigation.NavigateTo($"/cart-page?title={Uri.EscapeDataString(book.Title)}", forceLoad: true);
     }
 }

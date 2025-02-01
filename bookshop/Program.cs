@@ -1,12 +1,17 @@
 using bookshop;
 using bookshop.Components;
 using Syncfusion.Blazor;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 internal class Program
 {
     private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddDbContext<BookshopDbContext>(options =>
+        options.UseSqlite("Data Source=users.db"));
 
         // Add services to the container.
         builder.Services.AddRazorComponents()

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 
-namespace bookshop
+namespace bookshop.Models
 {
     public class Book
 
@@ -25,8 +25,8 @@ namespace bookshop
 
         public Book()
         {
-            Price = Math.Round(random.NextDouble() * (200), 2); 
+            Price = Math.Round(random.NextDouble() * 200, 2);
         }
     }
-   
+
 }
